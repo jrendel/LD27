@@ -1,0 +1,20 @@
+{"frames": {
+
+"ship1.png":
+{
+	"frame": {"x":2,"y":2,"w":1280,"h":640},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1280,"h":640},
+	"sourceSize": {"w":1280,"h":640}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker ",
+	"version": "1.0",
+	"image": "LevelAtlas.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:aa9d6d149bf8d0bbca5d04cb01e54fa4$"
+}
+}

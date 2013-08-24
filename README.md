@@ -8,7 +8,8 @@ Theme: 10 Seconds
 
 Time Logs
 =============
-Ideas brainstorming: ~1 hour (Fri)
+Idea brainstorming: ~1 hour (Fri)
+
 Graphics: 6 hours (Fri-Sat) 1 hour (Sat)
 
 BRAINSTORMING
@@ -21,7 +22,8 @@ Alternative Meetings for Seconds / Second
 - to assist or support
 - to further or advance, as aims
 
-Synonyms
+Synonyms:
+
 aide, helper, agent, deputy
 
 Ideas:

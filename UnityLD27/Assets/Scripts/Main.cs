@@ -37,11 +37,12 @@ public class Main : MonoBehaviour {
 		
 		fparams.AddResolutionLevel(1280.0f, 1.0f, 1.0f, "");
 		
-		fparams.origin = new Vector2(0.5f,0.5f);
+		fparams.origin = new Vector2(0.0f,0.0f);
 
 		Futile.instance.Init (fparams);
 		
 		Futile.atlasManager.LoadAtlas("Atlases/GameAtlas");
+		Futile.atlasManager.LoadAtlas("Atlases/LevelAtlas");
 		//Futile.atlasManager.LoadAtlas("Atlases/FontAtlas");
 		//Futile.atlasManager.LoadAtlas("Atlases/BackgroundAtlas");
 		//Futile.atlasManager.LoadFont("emulogic64", "emulogic64", "Atlases/FontAtlas", 0, 0);
@@ -68,7 +69,9 @@ public class Main : MonoBehaviour {
 
 	void HandleUpdate ()
 	{
-
+		float dt = Time.deltaTime;
+		Main.GameTime += dt;
+		
 		if (Input.GetKeyDown (KeyCode.Escape)) 
 		{
 			if(Screen.fullScreen)
