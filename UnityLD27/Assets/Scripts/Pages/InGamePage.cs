@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class InGamePage : BasePage
+public class InGamePage : BasePage, FSingleTouchableInterface
 {
 //	private Level1 _level1;
 	
@@ -19,6 +19,8 @@ public class InGamePage : BasePage
 	{		
 		ListenForUpdate(HandleUpdate);
 		ListenForResize(HandleResize);
+		
+		EnableSingleTouch();
 	}
 	
 	override public void Start()
@@ -83,6 +85,26 @@ public class InGamePage : BasePage
 		Main.instance.GoToPage(PageType.TitlePage);
 	}
 	
+	public bool HandleSingleTouchBegan(FTouch touch) {
+	    //Vector2 touchPosition = touch.position;
+		
+		_levelManager.handleUserTouch(touch);
+		
+		
+		return true;
+	}
+	
+	public void HandleSingleTouchMoved(FTouch touch){
+	    
+	}
+	 
+	public void HandleSingleTouchEnded(FTouch touch){
+	 
+	}
+	 
+	public void HandleSingleTouchCanceled(FTouch touch){
+	 
+	}
 	
 	protected void HandleUpdate ()
 	{

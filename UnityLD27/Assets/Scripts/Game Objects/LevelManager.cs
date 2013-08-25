@@ -35,7 +35,7 @@ public class LevelManager: FContainer
 		_levelDoors.Add(horzEscapeDoorTop);		
 		AddChild(horzEscapeDoorTop);
 		
-		Door horzEscapeDoorBot = new Door(true, 2, 4);		
+		Door horzEscapeDoorBot = new Door(true, 2, 5);		
 		_levelDoors.Add(horzEscapeDoorBot);		
 		AddChild(horzEscapeDoorBot);
 		
@@ -43,20 +43,20 @@ public class LevelManager: FContainer
 		_levelDoors.Add(vertEscapeDoorTop);		
 		AddChild(vertEscapeDoorTop);
 		
-		Door vertEscapeDoorBot = new Door(false, 1, 6);		
-		_levelDoors.Add(vertEscapeDoorBot);		
-		AddChild(vertEscapeDoorBot);
+//		Door vertEscapeDoorBot = new Door(false, 1, 6);		
+//		_levelDoors.Add(vertEscapeDoorBot);		
+//		AddChild(vertEscapeDoorBot);
 		 
 		// middle rooms
 		Door horzMidDoorTop = new Door(true, 6, 9);		
 		_levelDoors.Add(horzMidDoorTop);		
 		AddChild(horzMidDoorTop);
 		
-		Door horzMidDoorBot = new Door(true, 2, 9);		
+		Door horzMidDoorBot = new Door(true, 2, 8);		
 		_levelDoors.Add(horzMidDoorBot);		
 		AddChild(horzMidDoorBot);
 		
-		Door vertMidDoorTop = new Door(false, 8, 11);		
+		Door vertMidDoorTop = new Door(false, 7, 11);		
 		_levelDoors.Add(vertMidDoorTop);		
 		AddChild(vertMidDoorTop);
 		
@@ -68,9 +68,9 @@ public class LevelManager: FContainer
 		_levelDoors.Add(vertMidDoorMidLeft);		
 		AddChild(vertMidDoorMidLeft);
 		
-		Door vertMidDoorMidRight = new Door(false, 5, 11);		
-		_levelDoors.Add(vertMidDoorMidRight);		
-		AddChild(vertMidDoorMidRight);
+//		Door vertMidDoorMidRight = new Door(false, 5, 11);		
+//		_levelDoors.Add(vertMidDoorMidRight);		
+//		AddChild(vertMidDoorMidRight);
 		
 		// last rooms between Mid and Spawn
 		Door horzDoorTop = new Door(true, 6, 13);		
@@ -327,8 +327,42 @@ public class LevelManager: FContainer
 			// open the door
 			//_levelDoors[doorNumber].doorIsOpen = true;
 			_levelDoors[doorNumber].SetDoorStatus(true);
+		}		
+	}
+	
+	public void handleUserTouch(FTouch touch){
+		//Debug.Log ("User Global Touch x:" + touch.position.x + " y:" + touch.position.y);
+		Vector2 touchPos = _level1.GlobalToLocal(touch.position);
+		//Debug.Log ("User Local Touch x:" + touchPos.x + " y:" + touchPos.y);
+		
+		int colNumber = (int)touchPos.x / 64;
+		int rowNumber = (int)touchPos.y / 64;
+		
+		Door doorTouched = null;
+		
+		for (int i = 0; i < _levelDoors.Count; i++){
+		 	Door door = _levelDoors[i];
+			if (door.startRow == rowNumber && door.startCol == colNumber){
+				doorTouched = door;	
+				break;
+			} else if (door.doorIsHorizontal){
+				// horizontal door, so check ending tile (in same col)
+				if (door.startRow + 1 == rowNumber && door.startCol == colNumber){
+					doorTouched = door;	
+					break;
+				}
+			} else {
+				// vertical door, so check ending tile (in same row)	
+				if (door.startRow == rowNumber && door.startCol + 1 == colNumber){
+					doorTouched = door;	
+					break;
+				}
+			}
 		}
 		
+		if (doorTouched != null){
+			doorTouched.SetDoorStatus(!doorTouched.doorIsOpen);	
+		}
 	}
 }
 

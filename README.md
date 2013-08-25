@@ -82,5 +82,5 @@ Ideas:
 TODO:
 - add score page (shows credits)
 - add credits button to main screen - takes you to score page (with no score, just credits)
-
+- fires / electrical shocks in a room randomly at 10 sec intervals...crew die in these
 - splash screen?
