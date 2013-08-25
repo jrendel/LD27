@@ -75,28 +75,28 @@ public class Main : MonoBehaviour {
 	{
 		float dt = Time.deltaTime;
 		Main.GameTime += dt;
-		
-		if (Input.GetKeyDown (KeyCode.Escape)) 
-		{
-			if(Screen.fullScreen)
-			{
-				Screen.fullScreen = false;
-			}
-			else 
-			{
-				Application.Quit();
-			}
-		}
-
-		if (Input.GetKeyDown (KeyCode.M)) 
-		{
-			FSoundManager.isMuted = !FSoundManager.isMuted;
-		}
-
-		if (Input.GetKeyDown (KeyCode.F)) 
-		{
-			Screen.fullScreen = !Screen.fullScreen;
-		}
+ 
+//		if (Input.GetKeyDown (KeyCode.Escape)) 
+//		{
+//			if(Screen.fullScreen)
+//			{
+//				Screen.fullScreen = false;
+//			}
+//			else 
+//			{
+//				Application.Quit();
+//			}
+//		}
+//
+//		if (Input.GetKeyDown (KeyCode.M)) 
+//		{
+//			FSoundManager.isMuted = !FSoundManager.isMuted;
+//		}
+//
+//		if (Input.GetKeyDown (KeyCode.F)) 
+//		{
+//			Screen.fullScreen = !Screen.fullScreen;
+//		}
 	}
 	
 	public void GoToPage (PageType pageType)

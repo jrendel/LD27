@@ -20,10 +20,25 @@ Theme: 10 Seconds
 
 Time Logs
 =============
--Idea brainstorming: ~1 hour (Fri)
--Graphics: 10 hours (6 fri, 4 sat)
--Programming: 12 hrs (8 sat, 4 sun)
--Bugs: Font importing ~1.5hr (Sat)
+9 pm Fri - 4 am Sat 
+- 1 hr brainstorming
+- 6 hr graphics
+
+10 am Sat -  6 pm Sat *break* 9 pm Sat - 4:30 am Sun
+- 10 hr programming
+- 1.5 hr specific bug issue
+- 4 hr graphics 
+
+9:30 Sun - 9 pm Sun
+- 6 hr programming
+- 2 hr graphics
+- 1-4 hr polish and testing
+
+Other breaks in between - snacks, talking dog out, etc probably account for an hour or so
+
+All Together: ~30hrs
+Sleep+breakfast+walking the dog: ~6 each morning
+Other: 3 hr
 
 BRAINSTORMING
 =============
@@ -76,9 +91,5 @@ Ideas:
 
 
 TODO:
-- win / end game condition - timer?
-- cryosleep / stasis pops in spawning rooms
-- add score page (shows credits)
-- add credits button to main screen - takes you to score page (with no score, just credits)
 - fires / electrical shocks in a room randomly at 10 sec intervals...crew die in these
 - splash screen?

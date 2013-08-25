@@ -2,19 +2,27 @@
 
 "ship1.png":
 {
-	"frame": {"x":2,"y":2,"w":1216,"h":628},
+	"frame": {"x":2,"y":772,"w":1216,"h":628},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":34,"y":7,"w":1216,"h":628},
 	"sourceSize": {"w":1280,"h":640}
+},
+"viewport.png":
+{
+	"frame": {"x":2,"y":2,"w":1280,"h":768},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1280,"h":768},
+	"sourceSize": {"w":1280,"h":768}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker ",
 	"version": "1.0",
 	"image": "LevelAtlas.png",
 	"format": "RGBA8888",
-	"size": {"w":2048,"h":1024},
+	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:801494cdbc3201fd1a30cf5388efa273$"
+	"smartupdate": "$TexturePacker:SmartUpdate:b01601b0b1e2be07d50fc4fe9325acc2$"
 }
 }

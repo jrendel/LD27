@@ -20,6 +20,10 @@ public class ScorePage : BasePage
 		// once play navigates away from home screen, don't play the intro when they return
 		Main.instance.playIntro = false;
 		
+		FSprite background = new FSprite("viewport");
+		background.SetAnchor(0.0f, 0.0f);
+		AddChild(background);
+		
 		string backButtonText = "Back";
 		string titleText = "About The Game";
 		if (Main.instance.gameFinished){
@@ -61,7 +65,7 @@ public class ScorePage : BasePage
 
 		_quitButton.SignalRelease += HandleQuitButtonRelease;
 		
-		string about = "Game Designed and created by Jason Rendel,\nfor Ludum Dare 27. My first game jam ever!\nCreated for the 48 hour competition.\n\n ---- Tools ----\n Unity 3d - Futile - Gimp - Texture Packer - Glyph Designer - CFXR\n\nFollow me @jasonrendel\nCheck out what else I'm up to at www.jasonrendel.com";
+		string about = "Game Designed and created by Jason Rendel,\nfor Ludum Dare 27. My first game jam ever!\nCreated for the 48 hour competition.\n\n ---- Tools ----\n Unity 3d - Futile - Gimp \nTexture Packer - Glyph Designer - CFXR\n\nFollow me @jasonrendel\nCheck out what else I'm up to at www.jasonrendel.com";
 		
 		_scoreLabel = new FLabel("Emulogic", about);
 		_scoreLabel.color = Color.black;

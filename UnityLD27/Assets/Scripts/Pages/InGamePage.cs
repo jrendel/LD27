@@ -4,14 +4,11 @@ using System.Collections.Generic;
 using System;
 
 public class InGamePage : BasePage, FSingleTouchableInterface
-{
-//	private Level1 _level1;
-	
+{	
 	private FButton _closeButton;
 	
 	private int _crewSpawned = 0;
 	private float _lastCycle = 0;
-	private float _lastTestCycle = 0;
 	private int _meltdownSegmentCount = 0;
 	
 	private LevelManager _levelManager;
@@ -72,12 +69,11 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		selectedInventory.isVisible = false;
 		AddChild(selectedInventory); 
 		
-		spawnInventory();
+		//spawnInventory();
 		
-		spawnCrew(1);
+		spawnCrew(2);
 		
 		_lastCycle = Main.GameTime;
-		_lastTestCycle = Main.GameTime;
 	}
 	
 	private void spawnCrew(int crewCount){
@@ -147,12 +143,20 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 				_invNumSelected = 3;
 			}
 			
-			if (invSelected){				
-				selectedInventory.SetPosition(colTouched * 64 + 32, rowTouched * 64 + 32);
-				selectedInventory.isVisible = true;
+			if (invSelected){	
+				// so the user selected a valid inventory slot, 
+				// now make sure there is something in that slot
+				if (_inventory[_invNumSelected] != null){
+					selectedInventory.SetPosition(colTouched * 64 + 32, rowTouched * 64 + 32);
+					selectedInventory.isVisible = true;
+				} else {
+					// they clicked on an empty inventory
+					invSelected = false;
+					_invNumSelected = -1;
+				}
 			}
 		}else {
-			if (_invNumSelected != -1){
+			if (_invNumSelected != -1 && _inventory[_invNumSelected] != null){
 				// they have an inventory item selected
 				
 				// check that they touched a valid tile in the game
@@ -237,31 +241,13 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	protected void HandleUpdate ()
 	{
 		float dt = Time.deltaTime;
-		if (Main.GameTime - _lastTestCycle > 0.25){
-//			if (_meltdownSegmentCount < 20){
-//				
-//				float segmentWidth = 640 / 20;
-//				
-//				
-//				FSprite meltdownSegment = new FSprite("meltdownSegment");
-//				meltdownSegment.width = segmentWidth;
-//				// calculate position
-//				float x = Futile.screen.halfWidth - (meltdownBar.width / 2) + 4 + (segmentWidth / 2); // 4 is to get the spacing right
-//				x += _meltdownSegmentCount * segmentWidth;
-//				meltdownSegment.SetPosition(x, 672);
-//				AddChild(meltdownSegment);								
-//				_meltdownSegmentCount++;
-//			} else {
-//				GameOver();
-//			}
-			_lastTestCycle = Main.GameTime;
-		}
+
 		if (Main.GameTime - _lastCycle > 10){
 			// spawn some new crew every 10 seconds
 			spawnInventory();
 			//if(_crewSpawned < 20){
-			if (_crewMembers.Count < 16){ // keep spawning crew so long as there arae not more than 16 currently out
-				//spawnCrew(3);
+			if (_crewMembers.Count < 10){ // keep spawning crew so long as there arae not more than 10 currently out
+				spawnCrew(3);
 			}
 			_levelManager.scrambleDoors();
 			
@@ -286,6 +272,35 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 			}
 			
 			_lastCycle = Main.GameTime;
+		}
+		
+		// handle input
+		bool invKeyPressed = false;
+		
+		if (Input.GetKey(KeyCode.Alpha1)){
+			invKeyPressed = true;
+			_invNumSelected = 0;
+		} else if (Input.GetKey(KeyCode.Alpha2)){
+			invKeyPressed = true;
+			_invNumSelected = 1;
+		} else if (Input.GetKey(KeyCode.Alpha3)){
+			invKeyPressed = true;
+			_invNumSelected = 2;
+		} else if (Input.GetKey(KeyCode.Alpha4)){
+			invKeyPressed = true;
+			_invNumSelected = 3;
+		}
+		
+		if (invKeyPressed){	
+				// so the user selected a valid inventory slot, 
+				// now make sure there is something in that slot
+				if (_inventory[_invNumSelected] != null){
+					selectedInventory.SetPosition(positionForInventory(_invNumSelected));
+					selectedInventory.isVisible = true;
+				} else {
+					// they clicked on an empty inventory
+					_invNumSelected = -1;
+				}
 		}
 		
 		// update crew member's movement direction
