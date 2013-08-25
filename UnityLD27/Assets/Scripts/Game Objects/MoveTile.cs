@@ -16,19 +16,34 @@ public class MoveTile : FSprite
 	private int _frameIndex = 0;
 	private float _placedAt;
 	
-	public MoveTile() : base("moveTileUp"){
+	public MoveTile() : base("moveTileUp0"){
 				
-		_leftFrameElements = new FAtlasElement[1];
-		_rightFrameElements = new FAtlasElement[1];
-		_upFrameElements = new FAtlasElement[1];
-		_downFrameElements = new FAtlasElement[1];
+		_leftFrameElements = new FAtlasElement[4];
+		_rightFrameElements = new FAtlasElement[4];
+		_upFrameElements = new FAtlasElement[4];
+		_downFrameElements = new FAtlasElement[4];
 		
 		FAtlasManager am = Futile.atlasManager;
 		
-		_leftFrameElements[0] = am.GetElementWithName("moveTileLeft");
-		_rightFrameElements[0] = am.GetElementWithName("moveTileRight");
-		_upFrameElements[0] = am.GetElementWithName("moveTileUp");
-		_downFrameElements[0] = am.GetElementWithName("moveTileDown");
+		_leftFrameElements[0] = am.GetElementWithName("moveTileLeft0");
+		_leftFrameElements[1] = am.GetElementWithName("moveTileLeft1");
+		_leftFrameElements[2] = am.GetElementWithName("moveTileLeft2");
+		_leftFrameElements[3] = am.GetElementWithName("moveTileLeft3");
+		
+		_rightFrameElements[0] = am.GetElementWithName("moveTileRight0");
+		_rightFrameElements[1] = am.GetElementWithName("moveTileRight1");
+		_rightFrameElements[2] = am.GetElementWithName("moveTileRight2");
+		_rightFrameElements[3] = am.GetElementWithName("moveTileRight3");
+		
+		_upFrameElements[0] = am.GetElementWithName("moveTileUp0");
+		_upFrameElements[1] = am.GetElementWithName("moveTileUp1");
+		_upFrameElements[2] = am.GetElementWithName("moveTileUp2");
+		_upFrameElements[3] = am.GetElementWithName("moveTileUp3");
+		
+		_downFrameElements[0] = am.GetElementWithName("moveTileDown0");
+		_downFrameElements[1] = am.GetElementWithName("moveTileDown1");
+		_downFrameElements[2] = am.GetElementWithName("moveTileDown2");
+		_downFrameElements[3] = am.GetElementWithName("moveTileDown3");
 	
 		_placedAt = 0.0f;
 		
@@ -73,7 +88,7 @@ public class MoveTile : FSprite
 //				this.x += movement;
 //			} 	
 			
-			if(Time.frameCount % 10 == 0) //update every other 10th frame or when the direction changes
+			if(Time.frameCount % 16 == 0) //update every other 10th frame or when the direction changes
 			{
 				FAtlasElement[] _frameElements = _rightFrameElements;
 				
