@@ -11,11 +11,14 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	
 	private int _crewSpawned = 0;
 	private float _lastCycle = 0;
+	private float _lastTestCycle = 0;
+	private int _meltdownSegmentCount = 0;
 	
 	private LevelManager _levelManager;
 	private List<Crew> _crewMembers = new List<Crew>();
 	
 	private FLabel crewSavedLabel;
+	private FSprite meltdownBar;
 	
 	public InGamePage()
 	{		
@@ -38,6 +41,10 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 				
 		this.shouldSortByZ = true;
 		
+		meltdownBar = new FSprite("meltdown");
+		meltdownBar.SetPosition(Futile.screen.halfWidth, 672);
+		AddChild(meltdownBar);
+		
 		_closeButton = new FButton("button");
 		_closeButton.AddLabel("Emulogic","Quit",Color.black);
 		_closeButton.label.scale = 0.25f;
@@ -54,13 +61,14 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		AddChild(clock);
 		
 		crewSavedLabel = new FLabel("Emulogic", "Crew Members Saved: 0");
-		crewSavedLabel.SetPosition( Futile.screen.halfWidth, Futile.screen.height - 50.0f);
+		crewSavedLabel.SetPosition( Futile.screen.halfWidth, Futile.screen.height - 25.0f);
 		crewSavedLabel.scale = 0.25f;
 		AddChild(crewSavedLabel);
 		
 		spawnCrew(2);
 		
 		_lastCycle = Main.GameTime;
+		_lastTestCycle = Main.GameTime;
 	}
 	
 	private void spawnCrew(int crewCount){
@@ -94,8 +102,12 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 
 	private void HandleCloseButtonRelease (FButton button)
 	{
+		GameOver();
+	}
+	
+	private void GameOver(){
 		Main.instance.gameFinished = true;
-		Main.instance.GoToPage(PageType.ScorePage);
+		Main.instance.GoToPage(PageType.ScorePage);	
 	}
 	
 	public bool HandleSingleTouchBegan(FTouch touch) {
@@ -122,11 +134,51 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	protected void HandleUpdate ()
 	{
 		float dt = Time.deltaTime;
-		
-		if (Main.GameTime - _lastCycle > 10 && _crewSpawned < 16){
+		if (Main.GameTime - _lastTestCycle > 0.25){
+//			if (_meltdownSegmentCount < 20){
+//				
+//				float segmentWidth = 640 / 20;
+//				
+//				
+//				FSprite meltdownSegment = new FSprite("meltdownSegment");
+//				meltdownSegment.width = segmentWidth;
+//				// calculate position
+//				float x = Futile.screen.halfWidth - (meltdownBar.width / 2) + 4 + (segmentWidth / 2); // 4 is to get the spacing right
+//				x += _meltdownSegmentCount * segmentWidth;
+//				meltdownSegment.SetPosition(x, 672);
+//				AddChild(meltdownSegment);								
+//				_meltdownSegmentCount++;
+//			} else {
+//				GameOver();
+//			}
+			_lastTestCycle = Main.GameTime;
+		}
+		if (Main.GameTime - _lastCycle > 10){
 			// spawn some new crew every 10 seconds
-			spawnCrew(2);
+			if(_crewSpawned < 20){
+				spawnCrew(3);
+			}
 			_levelManager.scrambleDoors();
+			
+			int totalMeltdownSegments = 20; 
+			//  use 20 for shorter game play (about 3.3 minutes)
+			//  use 32 for shorter game play (about 5.3 minutes)
+			if (_meltdownSegmentCount < totalMeltdownSegments){
+				
+				float segmentWidth = 640 / totalMeltdownSegments;
+				
+				// draw another segment on the meltdown timer
+				FSprite meltdownSegment = new FSprite("meltdownSegment");
+				meltdownSegment.width = segmentWidth;
+				// calculate position
+				float x = Futile.screen.halfWidth - (meltdownBar.width / 2) + 4 + (segmentWidth / 2); // 4 is to get the spacing right
+				x += _meltdownSegmentCount * segmentWidth;
+				meltdownSegment.SetPosition(x, 672);
+				AddChild(meltdownSegment);								
+				_meltdownSegmentCount++;
+			} else {
+				GameOver();
+			}
 			
 			_lastCycle = Main.GameTime;
 		}

@@ -24,7 +24,7 @@ public class ScorePage : BasePage
 		string titleText = "About The Game";
 		if (Main.instance.gameFinished){
 			// Display end game messages
-			titleText = "Operation Complete!";
+			titleText = "The Ship Went Nuclear!";
 			
 			_scoreLabel = new FLabel("Emulogic", "You Saved " + Main.instance.crewSaved + " Crew Members");
 			_scoreLabel.color = Color.black; // new Color(0.173f, 0.722f, 0.976f, 1.0f);
