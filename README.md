@@ -3,7 +3,7 @@ LD27
 
 My game for the 27th Ludum Dare 48 hour game competition!
 
-Be warned, there's A LOT of nasty hard coding going on in here! I only had 48 hours, what can I say :)
+Be warned, there's A LOT of nasty hard coding going on in here! I only had 48 hours, what can I say :) Be prepared for lots of magic numbers!
 
 Also I have been focused solely on Objective C and the Xcode environment for 2 years, so my code formatting is a mix of what I am used to, and matching what MonoDevelop generates.
 
@@ -80,6 +80,7 @@ Ideas:
 
 
 TODO:
+- win condition
 - add score page (shows credits)
 - add credits button to main screen - takes you to score page (with no score, just credits)
 - fires / electrical shocks in a room randomly at 10 sec intervals...crew die in these

@@ -15,6 +15,8 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	private LevelManager _levelManager;
 	private List<Crew> _crewMembers = new List<Crew>();
 	
+	private FLabel crewSavedLabel;
+	
 	public InGamePage()
 	{		
 		ListenForUpdate(HandleUpdate);
@@ -25,6 +27,8 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	
 	override public void Start()
 	{
+		Main.instance.crewSaved = 0;
+		
 		_levelManager = new LevelManager();
 		
 		AddChild(_levelManager);
@@ -45,6 +49,11 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		Clock clock = new Clock();
 		clock.SetPosition( 50.0f, Futile.screen.height - 50.0f);
 		AddChild(clock);
+		
+		crewSavedLabel = new FLabel("Emulogic", "Crew Members Saved: 0");
+		crewSavedLabel.SetPosition( Futile.screen.halfWidth, Futile.screen.height - 50.0f);
+		crewSavedLabel.scale = 0.25f;
+		AddChild(crewSavedLabel);
 		
 		spawnCrew(2);
 		
@@ -119,7 +128,7 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		}
 		
 		// update crew member's movement direction
-		//loop backwards in case I decide to remove a crew member from the list, it won't cause problems
+		//loop backwards so if we remove a crew member from the list, it won't cause problems
 		for (int i = _crewMembers.Count-1; i >= 0; i--) 
 		{
 			Crew crewMember = _crewMembers[i];
@@ -140,7 +149,23 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 			}
 			// update crew member's position (having taken into account all previous checks)
 			crewMember.SetPosition(newCrewPosition);
+			
+			// check if crew member is in the escape pod room
+			int escapePodXMax = (64 * 7) - 32;
+			int escapePodYMax = (64 * 3) - 32;
+			if (newCrewPosition.x <= escapePodXMax && newCrewPosition.y <= escapePodYMax){
+				// you saved this crew member!
+				FSoundManager.PlaySound("crewSaved1");
+				Main.instance.crewSaved++;
+				crewSavedLabel.text = "Crew Members Saved: " + Main.instance.crewSaved;
+				
+				_crewMembers.Remove(crewMember);
+				crewMember.shouldDestroy = true;
+			}
 		}
+		
+		
+		
 	}
 	
 	

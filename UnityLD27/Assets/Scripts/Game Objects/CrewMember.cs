@@ -140,7 +140,7 @@ public class Crew : FSprite
 				_frameIndex++;
 			}
 		} else {	
-			//this.Destroy();
+			this.Destroy();
 		}
 	}
 	

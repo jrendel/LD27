@@ -17,6 +17,8 @@ public class Main : MonoBehaviour {
 	
 	private FStage _stage;
 	
+	public int crewSaved = 0;
+	
 	void Start () {
 	instance = this;
 		GameTime = 0.0f;
