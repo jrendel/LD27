@@ -44,7 +44,7 @@ public class InGamePage : BasePage
 		clock.SetPosition( 50.0f, Futile.screen.height - 50.0f);
 		AddChild(clock);
 		
-		spawnCrew(1);
+		spawnCrew(2);
 		
 		_lastCycle = Main.GameTime;
 	}
@@ -90,7 +90,7 @@ public class InGamePage : BasePage
 		
 		if (Main.GameTime - _lastCycle > 10 && _crewSpawned < 16){
 			// spawn some new crew every 10 seconds
-			//spawnCrew(2);
+			spawnCrew(2);
 			_levelManager.scrambleDoors();
 			
 			_lastCycle = Main.GameTime;
@@ -103,19 +103,19 @@ public class InGamePage : BasePage
 			Crew crewMember = _crewMembers[i];
 			VectorDirection currentDirection = crewMember.direction;
 			Vector2 newCrewPosition = crewMember.calculateNewPosition(dt);
-			
-			if (_levelManager.willDirectCrewToDoor(crewMember)) { // check if crew member is next to an open door, if so they will be directed to it	
-				if (crewMember.direction != currentDirection){
-					// direction was updated, don't adjust position	
-					newCrewPosition = crewMember.GetPosition();
-				}
-			} else {
-				if (!_levelManager.checkCrewHeadingOk(crewMember, newCrewPosition)){
-					// crew member heading into a wall, so heading was adjusted, don't update position	
-					newCrewPosition = crewMember.GetPosition();
+			if (!_levelManager.crewMemberIsPassingThruDoor(crewMember)){
+				if (_levelManager.willDirectCrewToDoor(crewMember)) { // check if crew member is next to an open door, if so they will be directed to it	
+					if (crewMember.direction != currentDirection){
+						// direction was updated, don't adjust position	
+						newCrewPosition = crewMember.GetPosition();
+					}
+				} else {
+					if (!_levelManager.checkCrewHeadingOk(crewMember, newCrewPosition)){
+						// crew member heading into a wall, so heading was adjusted, don't update position	
+						newCrewPosition = crewMember.GetPosition();
+					}
 				}
 			}
-			
 			// update crew member's position (having taken into account all previous checks)
 			crewMember.SetPosition(newCrewPosition);
 		}

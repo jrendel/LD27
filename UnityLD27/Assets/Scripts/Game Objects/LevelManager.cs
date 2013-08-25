@@ -97,8 +97,15 @@ public class LevelManager: FContainer
 		}
 	}
 	
+	// this method is fairly similar to willDirectCrewToDoor(Crew crewMember)
+	// there may be a way to combine similar functionality that has been copy/pasted.
+	// but thats a challenge for another time.
 	public bool crewMemberIsPassingThruDoor(Crew crewMember){
-		// check if the crew member is intersecting any doors, this would only be possible if we allowed them to start passing through one
+		// check if the crew member is on its way through a daor
+		// we'll do this by checking if the crew member is on a door's start/end tile and headed towards its end/start tile
+		// of if the crew member is actually intersecting the door
+		
+		// check for intersection status first, since thats easier
 		float crewXMin = crewMember.x - (crewMember.width / 2);
 		float crewXMax = crewMember.x + (crewMember.width / 2);
 		float crewYMin = crewMember.y - (crewMember.height / 2);
@@ -109,19 +116,84 @@ public class LevelManager: FContainer
 			if (door.doorIsHorizontal){
 				// horizontal door, so check if crew's y boundaries intersect door's y
 				if (crewYMin <= door.y && crewYMax >= door.y){
-					return true;
+					// make sure crew member's x boundaries are within the door's x boundaries
+					if (crewXMin >= door.x - door.width / 2 && crewXMax <= door.x + door.width / 2){
+						return true;
+					}
 				}	
 			} else {
 				// vertical door, so check if crew's x boundaries intersect door's x
 				if (crewXMin <= door.x && crewXMax >= door.x){
-					return true;	
+					// make sure crew member's y boundaries are within the door's y boundaries
+					if (crewYMin >= door.y - door.height / 2 && crewYMax <= door.y + door.height / 2){
+						return true;
+					}	
 				}
 			}			
 		}
 		
+		// if we get here, we didn't find any interesecting doors. So now we check if 
+		// the crew member is on its way towards a door.
+		
+		// get crew members column number and the tile's x bounding values
+		int colNumber = (int)crewMember.x / 64;
+		int xTileMin = colNumber * 64;
+		int xTileMax = xTileMin + 64;
+		
+		// get crew members row number tile's y bounding values
+		int rowNumber = (int)crewMember.y / 64;
+		int yTileMin = rowNumber * 64;
+		int yTileMax = yTileMin + 64;
+		
+		// see if there is a door next to the crew member
+		Door checkDoor = getOpenDoor(rowNumber, colNumber);
+		
+		if (checkDoor != null){
+			if (checkDoor.doorIsHorizontal){
+				// door is above or below the crew member, make sure they are within the tile's x boundary in order to access	
+				if (crewXMin >= xTileMin && crewXMax <= xTileMax){
+					if (rowNumber == checkDoor.startRow){
+						// crew member is below	
+						if (crewMember.direction == VectorDirection.Up){
+							// crew member is heading through the door
+							return true;
+						}
+					} else {
+						// crew member is above
+						if (crewMember.direction == VectorDirection.Down){
+							// crew member is heading through the door
+							return true;
+						}
+					}
+				}
+			} else {
+				// door is to the left or right of the crew member, make sure they are within the tile's y boundary in order to access
+				if (crewYMin >= yTileMin && crewYMax <= yTileMax){
+					// check for a door to the left or right that the crew member could access
+					if (colNumber == checkDoor.startCol){
+						// crew member is to the left	
+						if (crewMember.direction == VectorDirection.Right){
+							// crew member is heading through the door
+							return true;
+						}
+					} else {
+						// crew member is to the right
+						if (crewMember.direction == VectorDirection.Left){
+							// crew member is heading through the door
+							return true;
+						}
+					}
+				}
+			}
+		}	
+		
+		// if get here, crew member is not heading through a door
 		return false;
 	}
 	
+	// this method is fairly similar to rewMemberIsPassingThruDoor(Crew crewMember)
+	// there may be a way to combine similar functionality that has been copy/pasted.
+	// but thats a challenge for another time.
 	public bool willDirectCrewToDoor(Crew crewMember){
 		bool willDirectToDoor = false;
 		
@@ -134,32 +206,34 @@ public class LevelManager: FContainer
 		float crewYMin = crewMember.y - (crewMember.height / 2);
 		float crewYMax = crewMember.y + (crewMember.height / 2);
 		
-		// get tile's x bounding values
+		// get crew members column number tile's x bounding values
 		int colNumber = (int)crewMember.x / 64;
 		int xTileMin = colNumber * 64;
 		int xTileMax = xTileMin + 64;
 		
-		// get tile's y bounding values
+		// get crew members row number tile's y bounding values
 		int rowNumber = (int)crewMember.y / 64;
 		int yTileMin = rowNumber * 64;
 		int yTileMax = yTileMin + 64;
 		
 		// see if there is a door next to the crew member
-		Door door = getDoor(rowNumber, colNumber);
+		Door checkDoor = getOpenDoor(rowNumber, colNumber);
 			
-		if (door != null){
-			if (door.doorIsHorizontal){
+		if (checkDoor != null){
+			if (checkDoor.doorIsHorizontal){
 				// door is above or below the crew member, make sure they are within the tile's x boundary in order to access	
 				if (crewXMin >= xTileMin && crewXMax <= xTileMax){
-					if (rowNumber == door.startRow){
+					if (rowNumber == checkDoor.startRow){
 						// crew member is below	
-						if (crewMember.direction != VectorDirection.Up){
+						if (crewMember.direction != VectorDirection.Up && crewMember.direction != VectorDirection.Down){
+							// update direction so long as crew member is not moving directly away from the door, in which case they probably just passed through it
 							willDirectToDoor = true;
 							crewMember.ChangeDirection(VectorDirection.Up);
 						}
 					} else {
 						// crew member is above
-						if (crewMember.direction != VectorDirection.Down){
+						if (crewMember.direction != VectorDirection.Down && crewMember.direction != VectorDirection.Up){
+							// update direction so long as crew member is not moving directly away from the door, in which case they probably just passed through it
 							willDirectToDoor = true;
 							crewMember.ChangeDirection(VectorDirection.Down);
 						}
@@ -169,15 +243,17 @@ public class LevelManager: FContainer
 				// door is to the left or right of the crew member, make sure they are within the tile's y boundary in order to access
 				if (crewYMin >= yTileMin && crewYMax <= yTileMax){
 					// check for a door to the left or right that the crew member could access
-					if (colNumber == door.startCol){
+					if (colNumber == checkDoor.startCol){
 						// crew member is to the left	
-						if (crewMember.direction != VectorDirection.Right){
+						if (crewMember.direction != VectorDirection.Right && crewMember.direction != VectorDirection.Left){
+							// update direction so long as crew member is not moving directly away from the door, in which case they probably just passed through it
 							willDirectToDoor = true;
 							crewMember.ChangeDirection(VectorDirection.Right);
 						}
 					} else {
 						// crew member is to the right
-						if (crewMember.direction != VectorDirection.Left){
+						if (crewMember.direction != VectorDirection.Left && crewMember.direction != VectorDirection.Right){
+							// update direction so long as crew member is not moving directly away from the door, in which case they probably just passed through it
 							willDirectToDoor = true;
 							crewMember.ChangeDirection(VectorDirection.Left);
 						}
@@ -190,30 +266,32 @@ public class LevelManager: FContainer
 		return willDirectToDoor;
 	}
 	
-	private Door getDoor(int crewRowNumber, int crewColNumber){
+	private Door getOpenDoor(int crewRowNumber, int crewColNumber){
 		Door returnDoor = null;
 		
 		for (int i = 0; i < _levelDoors.Count; i++){
 		 	Door door = _levelDoors[i];
-			if (door.startRow == crewRowNumber && door.startCol == crewColNumber){ 
-				// crew member is standing on a door start tile
-				returnDoor = door;	
-				break;
-			} else if (door.doorIsHorizontal){
-				// horizontal door, so check ending tile (in same col)
-				if (door.startRow + 1 == crewRowNumber && door.startCol == crewColNumber){
-					// crew member is standing on a door end tile
+			if (door.doorIsOpen){
+				if (door.startRow == crewRowNumber && door.startCol == crewColNumber){ 
+					// crew member is standing on a door start tile
 					returnDoor = door;	
 					break;
+				} else if (door.doorIsHorizontal){
+					// horizontal door, so check ending tile (in same col)
+					if (door.startRow + 1 == crewRowNumber && door.startCol == crewColNumber){
+						// crew member is standing on a door end tile
+						returnDoor = door;	
+						break;
+					}
+				} else {
+					// vertical door, so check ending tile (in same row)	
+					if (door.startRow == crewRowNumber && door.startCol + 1 == crewColNumber){
+						// crew member is standing on a door end tile
+						returnDoor = door;	
+						break;
+					}
 				}
-			} else {
-				// vertical door, so check ending tile (in same row)	
-				if (door.startRow == crewRowNumber && door.startCol + 1 == crewColNumber){
-					// crew member is standing on a door end tile
-					returnDoor = door;	
-					break;
-				}
-			}			
+			}
 		}
 		
 		return returnDoor;
