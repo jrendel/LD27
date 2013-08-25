@@ -75,12 +75,27 @@ Ideas:
  			- turn right
 
 		
+Intro Text
+	Welcome. 
+	Something has gone wrong. The ship is malfunctioning.
+	They need your help.
+	The crew are awakening from stasis, but they are disoriented.
+	You need to guide them to the escape pods.
+	The Doors. The doors, I can't control them.
+	We need your help.
 	
-	
+	SAVE THEM
 
+
+UI about what to do
+-escape pods
+-crew
+-doors
+-clock
 
 TODO:
-- win condition
+- win / end game condition - timer?
+- cryosleep / stasis pops in spawning rooms
 - add score page (shows credits)
 - add credits button to main screen - takes you to score page (with no score, just credits)
 - fires / electrical shocks in a room randomly at 10 sec intervals...crew die in these

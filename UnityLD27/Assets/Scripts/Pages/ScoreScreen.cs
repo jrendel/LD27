@@ -17,9 +17,11 @@ public class ScorePage : BasePage
 	
 	override public void Start()
 	{
+		// once play navigates away from home screen, don't play the intro when they return
+		Main.instance.playIntro = false;
+		
 		string backButtonText = "Back";
 		string titleText = "About The Game";
-		int backButtonOffset = 0;
 		if (Main.instance.gameFinished){
 			// Display end game messages
 			titleText = "Operation Complete!";
@@ -27,20 +29,19 @@ public class ScorePage : BasePage
 			_scoreLabel = new FLabel("Emulogic", "You Saved " + Main.instance.crewSaved + " Crew Members");
 			_scoreLabel.color = Color.black; // new Color(0.173f, 0.722f, 0.976f, 1.0f);
 			_scoreLabel.scale = 0.25f;
-			_scoreLabel.SetPosition(Futile.screen.halfWidth, Futile.screen.halfHeight + Futile.screen.halfHeight / 4);
+			_scoreLabel.SetPosition(Futile.screen.halfWidth, Futile.screen.halfHeight + Futile.screen.halfHeight / 2);
 			
 			AddChild(_scoreLabel);
 			
 			_againButton = new FButton("buttonWide");
 			_againButton.AddLabel("Emulogic","Play Again",Color.black);  //new Color(0.45f,0.25f,0.0f,1.0f)
 			_againButton.label.scale = 0.25f;
-			_againButton.SetPosition(Futile.screen.halfWidth, Futile.screen.halfHeight);
+			_againButton.SetPosition(Futile.screen.halfWidth, Futile.screen.halfHeight + 80);
 			AddChild(_againButton);
 	
 			_againButton.SignalRelease += HandleAgainButtonRelease;
 			
 			backButtonText = "Quit";
-			backButtonOffset = 80;
 		} else {
 			// diplay generic message	
 		}
@@ -48,14 +49,14 @@ public class ScorePage : BasePage
 		_textLabel = new FLabel("Emulogic", titleText);
 		_textLabel.color = Color.black; 
 		_textLabel.scale = 0.5f;
-		_textLabel.SetPosition(Futile.screen.halfWidth, Futile.screen.halfHeight + Futile.screen.halfHeight / 2);
+		_textLabel.SetPosition(Futile.screen.halfWidth, Futile.screen.halfHeight + Futile.screen.halfHeight * 2 / 3);
 		
 		AddChild(_textLabel);
 		
 		_quitButton = new FButton("buttonWide");
 		_quitButton.AddLabel("Emulogic",backButtonText,Color.black);  //new Color(0.45f,0.25f,0.0f,1.0f)
 		_quitButton.label.scale = 0.25f;
-		_quitButton.SetPosition(Futile.screen.halfWidth, Futile.screen.halfHeight - backButtonOffset);
+		_quitButton.SetPosition(Futile.screen.halfWidth, Futile.screen.halfHeight);
 		AddChild(_quitButton);
 
 		_quitButton.SignalRelease += HandleQuitButtonRelease;

@@ -17,6 +17,7 @@ public class Main : MonoBehaviour {
 	
 	private FStage _stage;
 	
+	public bool playIntro = true;
 	public int crewSaved = 0;
 	public bool gameFinished = false;
 	
@@ -36,7 +37,7 @@ public class Main : MonoBehaviour {
 		
 		FutileParams fparams = new FutileParams(landscape, landscape, portrait, shouldSupportPortraitUpsideDown);
 		
-		fparams.backgroundColor = Color.gray; // new Color(0.26f,0.26f,0.26f,1.0f); // RXColor.GetColorFromHex(0x74CBFF); //light blue 0x94D7FF or 0x74CBFF
+		fparams.backgroundColor = Color.grey; //new Color(0.0745f,0.0745f,0.0745f,1.0f); // RXColor.GetColorFromHex(0x74CBFF); //light blue 0x94D7FF or 0x74CBFF
 		
 		fparams.AddResolutionLevel(1280.0f, 1.0f, 1.0f, "");
 		

@@ -27,7 +27,7 @@ public class Crew : FSprite
 	
     public Crew() : base("walkRight0")  {
          
-        this.defaultVelocity = 100; 
+        this.defaultVelocity = 125; 
         this.currentVelocity = this.defaultVelocity;
 		
 		int randomDirection = RXRandom.Range(0, 4);

@@ -27,6 +27,9 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	
 	override public void Start()
 	{
+		// once play navigates away from home screen, don't play the intro when they return
+		Main.instance.playIntro = false;
+		
 		Main.instance.crewSaved = 0;
 		
 		_levelManager = new LevelManager();
