@@ -41,7 +41,7 @@ public class ScorePage : BasePage
 	
 			_againButton.SignalRelease += HandleAgainButtonRelease;
 			
-			backButtonText = "Quit";
+			backButtonText = "Home";
 		} else {
 			// diplay generic message	
 		}

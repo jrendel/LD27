@@ -7,6 +7,7 @@ public class LevelManager: FContainer
 {
 	private Level1 _level1;
 	private List<Door> _levelDoors = new List<Door>();
+	public List<MoveTile> moveTiles = new List<MoveTile>();
 	
 	public LevelManager(){
 		_level1 = new Level1("ship1");
@@ -22,11 +23,11 @@ public class LevelManager: FContainer
 	
 	private void addDoors(){
 		// spawning room doors
-		Door horzSpawnDoorTop = new Door(false, 6, 15);
+		Door horzSpawnDoorTop = new Door(false, 5, 15);
 		_levelDoors.Add(horzSpawnDoorTop);
 		AddChild(horzSpawnDoorTop);
 				
-		Door horzSpawnDoorBot = new Door(false, 3, 15);		
+		Door horzSpawnDoorBot = new Door(false, 4, 15);		
 		_levelDoors.Add(horzSpawnDoorBot);
 		AddChild(horzSpawnDoorBot);
 		
@@ -132,7 +133,7 @@ public class LevelManager: FContainer
 			}			
 		}
 		
-		// if we get here, we didn't find any interesecting doors. So now we check if 
+		// if we get here, we didn't find any interesecting doors. So now we check if 		
 		// the crew member is on its way towards a door.
 		
 		// get crew members column number and the tile's x bounding values
@@ -198,6 +199,7 @@ public class LevelManager: FContainer
 		bool willDirectToDoor = false;
 		
 		// check for a door immediately next to crew member
+		
 		// we'll do a tile based check if the crew member is completely in a tile
 		
 		// get crew member's bounding values
@@ -219,7 +221,7 @@ public class LevelManager: FContainer
 		// see if there is a door next to the crew member
 		Door checkDoor = getOpenDoor(rowNumber, colNumber);
 			
-		if (checkDoor != null){
+		if (checkDoor != null && crewMember.lastMoveTileUsed == null){ // if lastMoveTileUsed is not null, then crew member is still obeying a move tile
 			if (checkDoor.doorIsHorizontal){
 				// door is above or below the crew member, make sure they are within the tile's x boundary in order to access	
 				if (crewXMin >= xTileMin && crewXMax <= xTileMax){
@@ -364,5 +366,102 @@ public class LevelManager: FContainer
 			doorTouched.SetDoorStatus(!doorTouched.doorIsOpen);	
 		}
 	}
+	
+	#region MoveTiles
+	
+	public void moveTileAdded(MoveTile newMoveTile){
+		// first check if this tile exists
+		for (int i = moveTiles.Count-1; i >= 0; i--) 
+		{
+			MoveTile testMoveTile = moveTiles[i];
+		
+			if (testMoveTile.x == newMoveTile.x && testMoveTile.y == newMoveTile.y){
+				moveTiles.Remove(testMoveTile);
+				testMoveTile.shouldDestroy = true;
+				break; // break out since we can only have 1 moveTile on a location
+			}
+		}
+		
+		moveTiles.Add(newMoveTile);
+	}
+	
+	private MoveTile getMoveTile(int row, int col){
+		MoveTile foundTile = null;
+		
+		for (int i = moveTiles.Count-1; i >= 0; i--) 
+		{
+			MoveTile testMoveTile = moveTiles[i];
+		
+			if (testMoveTile.shouldDestroy){
+				// ignore this move tile, its being destroyed. We can remove it form our list.
+				moveTiles.Remove (testMoveTile);
+			} else {
+				int moveTileRow = (int)testMoveTile.y / 64;
+				int moveTileCol = (int)testMoveTile.x / 64;
+				
+				if (moveTileRow == row && moveTileCol == col){
+					foundTile = testMoveTile;
+					break;
+				}
+			}
+		}
+		
+		return foundTile;
+	}
+	
+	public bool willObeyFloorTile(Crew crewMember, Vector2 newPosition){
+		bool willObey = false;
+		// check for a floor tile under crew member
+		
+		// we'll do a tile based check if the crew member is completely in a tile
+		
+		// get crew member's bounding values
+		float crewXMin = newPosition.x - (crewMember.width / 2);
+		float crewXMax = newPosition.x + (crewMember.width / 2);
+		float crewYMin = newPosition.y - (crewMember.height / 2);
+		float crewYMax = newPosition.y + (crewMember.height / 2);
+		
+		// get crew members column number tile's x bounding values
+		int colNumber = (int)newPosition.x / 64;
+		int xTileMin = colNumber * 64;
+		int xTileMax = xTileMin + 64;
+		
+		// get crew members row number tile's y bounding values
+		int rowNumber = (int)newPosition.y / 64;
+		int yTileMin = rowNumber * 64;
+		int yTileMax = yTileMin + 64;
+		
+		MoveTile moveTile = getMoveTile(rowNumber, colNumber);
+		
+		if (moveTile != null && moveTile != crewMember.lastMoveTileUsed){
+			// crew member is on a move tile and is not currently following it			
+			if (crewMember.direction != moveTile.direction){
+				// we only care if the tile will change the crew members direction
+				
+				if (crewMember.direction == VectorDirection.Up || crewMember.direction == VectorDirection.Down){
+				 	// crew member is moving up or down, wait until crew member is contained between tile's min/max y before obeying it 	
+					if (crewYMin >= yTileMin && crewYMax <= yTileMax){
+						crewMember.ChangeDirection(moveTile.direction);	
+						crewMember.lastMoveTileUsed = moveTile;
+						willObey = true;
+					}
+				} else {
+					// crew member is moving left or right, wait until crew member is contained between tile's min/max x before obeying it 	
+					if (crewXMin >= xTileMin && crewXMax <= xTileMax){
+						crewMember.ChangeDirection(moveTile.direction);	
+						crewMember.lastMoveTileUsed = moveTile;
+						willObey = true;
+					}
+				}
+			}
+		} else if (moveTile == null){
+			// crew member is not on a move tile
+			crewMember.lastMoveTileUsed = null;
+		}
+		
+		return willObey;	
+	}
+	
+	#endregion
 }
 

@@ -25,9 +25,11 @@ public class Crew : FSprite
 	private FAtlasElement[] _upFrameElements;
 	private FAtlasElement[] _downFrameElements;
 	
+	public MoveTile lastMoveTileUsed;
+	
     public Crew() : base("walkRight0")  {
          
-        this.defaultVelocity = 125; 
+        this.defaultVelocity = 100; 
         this.currentVelocity = this.defaultVelocity;
 		
 		int randomDirection = RXRandom.Range(0, 4);

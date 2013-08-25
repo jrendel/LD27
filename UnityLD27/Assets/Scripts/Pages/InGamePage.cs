@@ -16,9 +16,12 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	
 	private LevelManager _levelManager;
 	private List<Crew> _crewMembers = new List<Crew>();
+	private MoveTile[] _inventory = new MoveTile[4];
+	private int _invNumSelected = -1;
 	
 	private FLabel crewSavedLabel;
 	private FSprite meltdownBar;
+	private FSprite selectedInventory;
 	
 	public InGamePage()
 	{		
@@ -65,7 +68,13 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		crewSavedLabel.scale = 0.25f;
 		AddChild(crewSavedLabel);
 		
-		spawnCrew(2);
+		selectedInventory = new FSprite("inventorySelected");
+		selectedInventory.isVisible = false;
+		AddChild(selectedInventory); 
+		
+		spawnInventory();
+		
+		spawnCrew(1);
 		
 		_lastCycle = Main.GameTime;
 		_lastTestCycle = Main.GameTime;
@@ -75,6 +84,7 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		// spawn some crew
 		for (int i=0; i<crewCount; i++){
 			Crew crew = new Crew();
+			crew.sortZ = 10;
 			crew.SetPosition(_levelManager.randomSpawnPosition());
 			//crew.direction = VectorDirection.Right;
 			_crewMembers.Add(crew);
@@ -113,8 +123,67 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	public bool HandleSingleTouchBegan(FTouch touch) {
 	    //Vector2 touchPosition = touch.position;
 		
-		_levelManager.handleUserTouch(touch);
+		int rowTouched = (int)touch.position.y / 64;
+		int colTouched = (int)touch.position.x / 64;
 		
+		if ( colTouched == 1){
+			bool invSelected = false;
+			// could be inventory	
+			if (rowTouched == 8){
+				// inventory 1 (top)
+				invSelected = true;
+				_invNumSelected = 0;
+			} else if (rowTouched == 6){
+				// inventory 2	
+				invSelected = true;
+				_invNumSelected = 1;
+			} else if (rowTouched == 3){
+				// inventory 3 	
+				invSelected = true;
+				_invNumSelected = 2;
+			} else if (rowTouched == 1){
+				// inventory 4 (bottom)	
+				invSelected = true;
+				_invNumSelected = 3;
+			}
+			
+			if (invSelected){				
+				selectedInventory.SetPosition(colTouched * 64 + 32, rowTouched * 64 + 32);
+				selectedInventory.isVisible = true;
+			}
+		}else {
+			if (_invNumSelected != -1){
+				// they have an inventory item selected
+				
+				// check that they touched a valid tile in the game
+				bool validTouch = false;
+				if (colTouched >= 3 && colTouched <= 15 && rowTouched >= 1 && rowTouched <= 8){
+					// main section of ship
+					// now check its not in the escape pod room
+					if (colTouched >= 7 || rowTouched >= 3){
+						validTouch = true;
+					}
+				} else if (colTouched >= 16 && colTouched <= 18 && rowTouched >= 2 && rowTouched <= 7) {
+					// spawn rooms	
+					validTouch = true;
+				}
+				
+				if (validTouch){
+					MoveTile moveTile = _inventory[_invNumSelected];
+					moveTile.SetPosition(colTouched * 64 + 32, rowTouched * 64 + 32);
+					moveTile.PlaceTile();
+										
+					_levelManager.moveTileAdded(moveTile);
+					
+					_inventory[_invNumSelected] = null;
+					selectedInventory.isVisible = false;
+					_invNumSelected = -1;
+				}
+				
+			} else {
+				_levelManager.handleUserTouch(touch);
+			}
+		}
 		
 		return true;
 	}
@@ -130,6 +199,40 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 	public void HandleSingleTouchCanceled(FTouch touch){
 	 
 	}
+	
+	private void spawnInventory(){
+		//Debug.Log("Spawn Inv - " + _inventory.Length);
+		for (int i = 0; i < _inventory.Length; i++){
+			if (_inventory[i] == null){
+				//Debug.Log("Empty Slot - " + i); 
+				MoveTile moveTile = new MoveTile();
+				moveTile.sortZ = 5;				
+				moveTile.SetPosition(positionForInventory(i));
+				
+				_inventory[i] = moveTile;
+				
+				AddChild(moveTile);
+			}
+		}
+	}
+	
+	public Vector2 positionForInventory(int inventoryNumber){
+		int row = 8;
+		int col = 1;
+		
+		if (inventoryNumber == 0){
+			row = 8;
+		} else if (inventoryNumber == 1){
+			row = 6;
+		} else if (inventoryNumber == 2){
+			row = 3;
+		} else if (inventoryNumber == 3){
+			row = 1;
+		}
+		
+		return new Vector2(col * 64 + 32, row * 64 + 32);
+	}
+	
 	
 	protected void HandleUpdate ()
 	{
@@ -155,8 +258,10 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		}
 		if (Main.GameTime - _lastCycle > 10){
 			// spawn some new crew every 10 seconds
-			if(_crewSpawned < 20){
-				spawnCrew(3);
+			spawnInventory();
+			//if(_crewSpawned < 20){
+			if (_crewMembers.Count < 16){ // keep spawning crew so long as there arae not more than 16 currently out
+				//spawnCrew(3);
 			}
 			_levelManager.scrambleDoors();
 			
@@ -190,17 +295,17 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 			Crew crewMember = _crewMembers[i];
 			VectorDirection currentDirection = crewMember.direction;
 			Vector2 newCrewPosition = crewMember.calculateNewPosition(dt);
-			if (!_levelManager.crewMemberIsPassingThruDoor(crewMember)){
-				if (_levelManager.willDirectCrewToDoor(crewMember)) { // check if crew member is next to an open door, if so they will be directed to it	
+			if (!_levelManager.crewMemberIsPassingThruDoor(crewMember)){ // passing through a door takes precidence
+				if (_levelManager.willObeyFloorTile(crewMember, newCrewPosition)){
+					
+				} else if (_levelManager.willDirectCrewToDoor(crewMember)) { // check if crew member is next to an open door, if so they will be directed to it	
 					if (crewMember.direction != currentDirection){
 						// direction was updated, don't adjust position	
 						newCrewPosition = crewMember.GetPosition();
 					}
-				} else {
-					if (!_levelManager.checkCrewHeadingOk(crewMember, newCrewPosition)){
-						// crew member heading into a wall, so heading was adjusted, don't update position	
-						newCrewPosition = crewMember.GetPosition();
-					}
+				} else if (!_levelManager.checkCrewHeadingOk(crewMember, newCrewPosition)){
+					// crew member heading into a wall, so heading was adjusted, don't update position	
+					newCrewPosition = crewMember.GetPosition();
 				}
 			}
 			// update crew member's position (having taken into account all previous checks)
