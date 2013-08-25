@@ -36,7 +36,7 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		this.shouldSortByZ = true;
 		
 		_closeButton = new FButton("button");
-		_closeButton.AddLabel("Emulogic","X",Color.black);
+		_closeButton.AddLabel("Emulogic","Quit",Color.black);
 		_closeButton.label.scale = 0.25f;
 		_closeButton.sortZ = 1;
 		_closeButton.SignalRelease += HandleCloseButtonRelease;
@@ -91,7 +91,8 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 
 	private void HandleCloseButtonRelease (FButton button)
 	{
-		Main.instance.GoToPage(PageType.TitlePage);
+		Main.instance.gameFinished = true;
+		Main.instance.GoToPage(PageType.ScorePage);
 	}
 	
 	public bool HandleSingleTouchBegan(FTouch touch) {
@@ -155,7 +156,7 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 			int escapePodYMax = (64 * 3) - 32;
 			if (newCrewPosition.x <= escapePodXMax && newCrewPosition.y <= escapePodYMax){
 				// you saved this crew member!
-				FSoundManager.PlaySound("crewSaved1");
+				FSoundManager.PlaySound("crewSaved1", 0.5f);
 				Main.instance.crewSaved++;
 				crewSavedLabel.text = "Crew Members Saved: " + Main.instance.crewSaved;
 				

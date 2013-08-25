@@ -18,6 +18,7 @@ public class Main : MonoBehaviour {
 	private FStage _stage;
 	
 	public int crewSaved = 0;
+	public bool gameFinished = false;
 	
 	void Start () {
 	instance = this;
