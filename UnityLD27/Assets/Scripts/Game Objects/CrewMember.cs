@@ -30,7 +30,7 @@ public class Crew : FSprite
         this.defaultVelocity = 100; 
         this.currentVelocity = this.defaultVelocity;
 		
-		int randomDirection = RXRandom.Range(1, 4);
+		int randomDirection = RXRandom.Range(0, 4);
 		this.direction = VectorDirection.Up; // (VectorDirection)randomDirection;
 		
 		if (randomDirection == 1){

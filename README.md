@@ -3,6 +3,17 @@ LD27
 
 My game for the 27th Ludum Dare 48 hour game competition!
 
+Be warned, there's A LOT of nasty hard coding going on in here! I only had 48 hours, what can I say :)
+
+Also I have been focused solely on Objective C and the Xcode environment for 2 years, so my code formatting is a mix of what I am used to, and matching what MonoDevelop generates.
+
+Tools:
+Unity 3D + Futile framework (thanks @MattRix!)
+Gimp
+Texture Packer
+Glyph Designer
+
+There's a live demo of the game at http://www.jasonrendel.com/LD27/LD27Web
 
 Theme: 10 Seconds
 
@@ -10,7 +21,9 @@ Time Logs
 =============
 Idea brainstorming: ~1 hour (Fri)
 
-Graphics: 6 hours (Fri-Sat) 1 hour (Sat)
+Graphics: 6 hours (Fri-Sat) 2 hour (Sat)
+Programming: 7 hrs (Sat)
+Bugs: Font importing ~1.5hr (Sat)
 
 BRAINSTORMING
 =============
@@ -66,3 +79,8 @@ Ideas:
 	
 
 
+TODO:
+- add score page (shows credits)
+- add credits button to main screen - takes you to score page (with no score, just credits)
+
+- splash screen?

@@ -2,10 +2,10 @@
 
 "ship1.png":
 {
-	"frame": {"x":2,"y":2,"w":1280,"h":640},
+	"frame": {"x":2,"y":2,"w":1216,"h":628},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":1280,"h":640},
+	"trimmed": true,
+	"spriteSourceSize": {"x":34,"y":7,"w":1216,"h":628},
 	"sourceSize": {"w":1280,"h":640}
 }},
 "meta": {
@@ -15,6 +15,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:aa9d6d149bf8d0bbca5d04cb01e54fa4$"
+	"smartupdate": "$TexturePacker:SmartUpdate:298ce2666f5149f02d3ae887d1ea27e3$"
 }
 }
