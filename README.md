@@ -8,11 +8,11 @@ Be warned, there's A LOT of nasty hard coding going on in here! I only had 48 ho
 Also I have been focused solely on Objective C and the Xcode environment for 2 years, so my code formatting is a mix of what I am used to, and matching what MonoDevelop generates.
 
 Tools:
--Unity 3D + Futile framework (thanks @MattRix!)
--Gimp
--Texture Packer
--Glyph Designer
--cfxr
+- Unity 3D + Futile framework
+- Gimp
+- Texture Packer
+- Glyph Designer
+- cfxr
 
 There's a live demo of the game at http://www.jasonrendel.com/LD27/LD27Web
 
@@ -24,7 +24,7 @@ Time Logs
 - 1 hr brainstorming
 - 6 hr graphics
 
-10 am Sat -  6 pm Sat *break* 9 pm Sat - 4:30 am Sun
+10 am Sat -  6 pm Sat -break- 9 pm Sat - 4:30 am Sun
 - 10 hr programming
 - 1.5 hr specific bug issue
 - 4 hr graphics 
@@ -32,7 +32,7 @@ Time Logs
 9:30 Sun - 9 pm Sun
 - 6 hr programming
 - 2 hr graphics
-- 1-4 hr polish and testing
+- 1-4 hr polishing, testing, submitting
 
 Other breaks in between - snacks, talking dog out, etc probably account for an hour or so
 
@@ -90,6 +90,7 @@ Ideas:
  			- turn right
 
 
-TODO:
+TODO
+=============
 - fires / electrical shocks in a room randomly at 10 sec intervals...crew die in these
 - splash screen?

@@ -1,0 +1,28 @@
+{"frames": {
+
+"mainGameViewport.png":
+{
+	"frame": {"x":2,"y":772,"w":1280,"h":768},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1280,"h":768},
+	"sourceSize": {"w":1280,"h":768}
+},
+"viewport.png":
+{
+	"frame": {"x":2,"y":2,"w":1280,"h":768},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1280,"h":768},
+	"sourceSize": {"w":1280,"h":768}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker ",
+	"version": "1.0",
+	"image": "BackgroundAtlas.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":2048},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:12f74f0c86f46f2c20cfe70cf93fe7ff$"
+}
+}

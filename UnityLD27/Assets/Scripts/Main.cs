@@ -47,6 +47,7 @@ public class Main : MonoBehaviour {
 		
 		Futile.atlasManager.LoadAtlas("Atlases/GameAtlas");
 		Futile.atlasManager.LoadAtlas("Atlases/LevelAtlas");
+		Futile.atlasManager.LoadAtlas("Atlases/BackgroundAtlas");
 		//Futile.atlasManager.LoadAtlas("Atlases/FontAtlas");
 		//Futile.atlasManager.LoadAtlas("Atlases/BackgroundAtlas");
 		//Futile.atlasManager.LoadFont("emulogic64", "emulogic64", "Atlases/FontAtlas", 0, 0);

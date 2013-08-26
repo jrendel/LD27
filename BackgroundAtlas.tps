@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>unity</string>
         <key>textureFileName</key>
-        <filename>UnityLD27/Assets/Resources/Atlases/LevelAtlas.png</filename>
+        <filename>UnityLD27/Assets/Resources/Atlases/BackgroundAtlas.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -99,7 +99,7 @@
             <key>packageName</key>
             <string>Texture</string>
             <key>javaFileName</key>
-            <filename>UnityLD27/Assets/Resources/Atlases/LevelAtlas.java</filename>
+            <filename>UnityLD27/Assets/Resources/Atlases/BackgroundAtlas.java</filename>
             <key>wrap</key>
             <struct type="AndEngineWrap">
                 <key>s</key>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>UnityLD27/Assets/Resources/Atlases/LevelAtlas.txt</filename>
+        <filename>UnityLD27/Assets/Resources/Atlases/BackgroundAtlas.txt</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -146,7 +146,7 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>level background</filename>
+            <filename>viewports</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

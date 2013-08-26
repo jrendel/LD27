@@ -35,6 +35,10 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		
 		Main.instance.crewSaved = 0;
 		
+		FSprite background = new FSprite("mainGameViewport");
+		background.SetAnchor(0.0f, 0.0f);
+		AddChild(background);
+		
 		_levelManager = new LevelManager();
 		
 		AddChild(_levelManager);
@@ -51,17 +55,17 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		_closeButton.sortZ = 1;
 		_closeButton.SignalRelease += HandleCloseButtonRelease;
 		
-		_closeButton.x = Futile.screen.width - 100.0f;
-		_closeButton.y = Futile.screen.height -50.0f;
+		_closeButton.x = Futile.screen.width - 125.0f;
+		_closeButton.y = Futile.screen.height -75.0f;
 		
 		AddChild(_closeButton);
 		
 		Clock clock = new Clock();
-		clock.SetPosition( 50.0f, Futile.screen.height - 50.0f);
+		clock.SetPosition( 75.0f, Futile.screen.height - 75.0f);
 		AddChild(clock);
 		
 		crewSavedLabel = new FLabel("Emulogic", "Crew Members Saved: 0");
-		crewSavedLabel.SetPosition( Futile.screen.halfWidth, Futile.screen.height - 25.0f);
+		crewSavedLabel.SetPosition( Futile.screen.halfWidth, Futile.screen.height - 45.0f);
 		crewSavedLabel.scale = 0.25f;
 		AddChild(crewSavedLabel);
 		
@@ -121,7 +125,7 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		
 		int rowTouched = (int)touch.position.y / 64;
 		int colTouched = (int)touch.position.x / 64;
-		
+				
 		if ( colTouched == 1){
 			bool invSelected = false;
 			// could be inventory	
@@ -277,18 +281,22 @@ public class InGamePage : BasePage, FSingleTouchableInterface
 		// handle input
 		bool invKeyPressed = false;
 		
-		if (Input.GetKey(KeyCode.Alpha1)){
+		if (Input.GetKeyDown(KeyCode.Alpha1)){
 			invKeyPressed = true;
 			_invNumSelected = 0;
-		} else if (Input.GetKey(KeyCode.Alpha2)){
+		} else if (Input.GetKeyDown(KeyCode.Alpha2)){
 			invKeyPressed = true;
 			_invNumSelected = 1;
-		} else if (Input.GetKey(KeyCode.Alpha3)){
+		} else if (Input.GetKeyDown(KeyCode.Alpha3)){
 			invKeyPressed = true;
 			_invNumSelected = 2;
-		} else if (Input.GetKey(KeyCode.Alpha4)){
+		} else if (Input.GetKeyDown(KeyCode.Alpha4)){
 			invKeyPressed = true;
 			_invNumSelected = 3;
+		} else if (Input.GetKeyDown (KeyCode.Escape)){
+			invKeyPressed = false;
+			_invNumSelected = -1;
+			selectedInventory.isVisible = false;
 		}
 		
 		if (invKeyPressed){	
